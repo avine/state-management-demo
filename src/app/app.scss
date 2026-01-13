@@ -1,0 +1,9 @@
+.app-root {
+  display: block;
+  padding: 1.5rem;
+
+  &__header {
+    margin-bottom: 1.5rem;
+    font: var(--mat-sys-display-small);
+  }
+}
