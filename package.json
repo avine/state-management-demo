@@ -7,11 +7,16 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:state-management-demo": "node dist/state-management-demo/server/server.mjs"
+    "serve:ssr:state-management-demo": "node dist/state-management-demo/server/server.mjs",
+    "lint": "ng lint",
+    "format": "prettier --write ."
   },
   "prettier": {
     "printWidth": 100,
     "singleQuote": true,
+    "plugins": [
+      "prettier-plugin-organize-imports"
+    ],
     "overrides": [
       {
         "files": "*.html",
@@ -42,8 +47,14 @@
     "@angular/compiler-cli": "^21.0.0",
     "@types/express": "^5.0.1",
     "@types/node": "^20.17.19",
+    "angular-eslint": "21.1.0",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
     "jsdom": "^27.1.0",
+    "prettier": "^3.7.4",
+    "prettier-plugin-organize-imports": "^4.3.0",
     "typescript": "~5.9.2",
+    "typescript-eslint": "8.47.0",
     "vitest": "^4.0.8"
   }
 }
