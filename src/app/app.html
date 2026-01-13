@@ -2,11 +2,8 @@
   <button matIconButton aria-label="Toggle Sidenav" (click)="toggleSidenav()">
     <mat-icon>menu</mat-icon>
   </button>
-
   <span>State Management demo</span>
-
   <span class="app-root__header-spacer"></span>
-
   <a matButton="tonal" href="https://github.com/avine/state-management-demo" target="_blank">
     GitHub
   </a>
@@ -18,7 +15,7 @@
     mode="side"
     [opened]="sidenavOpened()"
     fixedInViewport
-    [fixedTopGap]="56"
+    [fixedTopGap]="fixedTopGap()"
   >
     <mat-nav-list>
       <a

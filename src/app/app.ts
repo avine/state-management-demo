@@ -1,10 +1,13 @@
-import { Component, signal, ViewEncapsulation } from '@angular/core';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Component, inject, signal, ViewEncapsulation } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -24,6 +27,12 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
   encapsulation: ViewEncapsulation.None,
 })
 export class App {
+  protected fixedTopGap = toSignal(
+    inject(BreakpointObserver)
+      .observe([Breakpoints.XSmall])
+      .pipe(map(({ matches }) => (matches ? 52 : 60))),
+  );
+
   protected sidenavOpened = signal(true);
 
   protected toggleSidenav() {
