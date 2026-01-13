@@ -1,9 +1,46 @@
 .app-root {
-  display: block;
-  padding: 1.5rem;
+  --mat-toolbar-standard-height: 56px;
+  --mat-toolbar-mobile-height: 56px;
+  //--mat-toolbar-container-background-color: var(--mat-sys-surface-container);
+
+  --mat-sidenav-container-shape: 0px;
+  --mat-sidenav-container-width: 220px;
+  --mat-sidenav-container-divider-color: var(--mat-sys-outline-variant);
+
+  --mat-list-active-indicator-shape: 0.25rem;
+
+  position: relative;
+  height: 100%;
+
+  display: grid;
+  grid-template-rows: var(--mat-toolbar-standard-height) auto;
+  grid-template-areas: 'header' 'container';
 
   &__header {
-    margin-bottom: 1.5rem;
-    font: var(--mat-sys-display-small);
+    box-sizing: border-box;
+    grid-area: header;
+    gap: 0.75rem;
+    border-bottom: 1px solid var(--mat-sys-outline-variant);
+    font: var(--mat-sys-headline-small);
+
+    &-spacer {
+      flex: 1 1 auto;
+    }
+  }
+
+  &__container {
+    grid-area: container;
+  }
+
+  &__sidenav {
+    padding: 0.5rem;
+
+    [mat-list-item] + [mat-list-item] {
+      margin-top: 1px;
+    }
+  }
+
+  &__main {
+    padding: 1.5rem;
   }
 }

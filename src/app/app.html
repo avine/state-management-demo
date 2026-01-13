@@ -1,5 +1,51 @@
-<header class="app-root__header">State Management demo</header>
+<mat-toolbar class="app-root__header" role="heading">
+  <button matIconButton aria-label="Toggle Sidenav" (click)="toggleSidenav()">
+    <mat-icon>menu</mat-icon>
+  </button>
 
-<main>
-  <router-outlet />
-</main>
+  <span>State Management demo</span>
+
+  <span class="app-root__header-spacer"></span>
+
+  <a matButton="tonal" href="https://github.com/avine/state-management-demo" target="_blank">
+    GitHub
+  </a>
+</mat-toolbar>
+
+<mat-sidenav-container class="app-root__container">
+  <mat-sidenav
+    class="app-root__sidenav"
+    mode="side"
+    [opened]="sidenavOpened()"
+    fixedInViewport
+    [fixedTopGap]="56"
+  >
+    <mat-nav-list>
+      <a
+        mat-list-item
+        routerLink="/"
+        routerLinkActive
+        [routerLinkActiveOptions]="{ exact: true }"
+        #active1="routerLinkActive"
+        [activated]="active1.isActive"
+      >
+        Home
+      </a>
+      <a
+        mat-list-item
+        routerLink="/material"
+        routerLinkActive
+        #active2="routerLinkActive"
+        [activated]="active2.isActive"
+      >
+        Material
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <main class="app-root__main">
+      <router-outlet />
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
