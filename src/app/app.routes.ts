@@ -12,4 +12,8 @@ export const routes: Routes = [
     path: 'material',
     component: MaterialDemo,
   },
+  {
+    path: '**',
+    redirectTo: '/',
+  },
 ];
