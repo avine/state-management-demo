@@ -11,6 +11,8 @@ body {
 }
 
 html {
+  overscroll-behavior: none;
+
   @include mat.theme(
     (
       color: (

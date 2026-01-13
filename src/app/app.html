@@ -1,11 +1,22 @@
 <mat-toolbar class="app-root__header" role="heading">
   <button matIconButton aria-label="Toggle Sidenav" (click)="toggleSidenav()">
-    <mat-icon>menu</mat-icon>
+    <mat-icon>
+      @if (sidenavOpened()) {
+        menu_open
+      } @else {
+        menu
+      }
+    </mat-icon>
   </button>
   <span>State Management demo</span>
   <span class="app-root__header-spacer"></span>
-  <a matButton="tonal" href="https://github.com/avine/state-management-demo" target="_blank">
-    GitHub
+  <a
+    matIconButton
+    matTooltip="View on GitHub"
+    href="https://github.com/avine/state-management-demo"
+    target="_blank"
+  >
+    <mat-icon>code</mat-icon>
   </a>
 </mat-toolbar>
 
