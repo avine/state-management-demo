@@ -9,15 +9,15 @@
   </a>
 </mat-toolbar>
 
-<mat-sidenav-container class="app-root__container">
+<mat-sidenav-container class="app-root__container" (backdropClick)="toggleSidenav()">
   <mat-sidenav
     class="app-root__sidenav"
-    mode="side"
+    [mode]="sidenavMode()"
     [opened]="sidenavOpened()"
     fixedInViewport
     [fixedTopGap]="fixedTopGap()"
   >
-    <mat-nav-list>
+    <mat-nav-list class="app-root__menu">
       <a
         mat-list-item
         routerLink="/"
@@ -40,9 +40,7 @@
     </mat-nav-list>
   </mat-sidenav>
 
-  <mat-sidenav-content>
-    <main class="app-root__main">
-      <router-outlet />
-    </main>
+  <mat-sidenav-content class="app-root__main" role="main">
+    <router-outlet />
   </mat-sidenav-content>
 </mat-sidenav-container>

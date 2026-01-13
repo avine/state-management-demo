@@ -1,24 +1,27 @@
 .app-root {
+  // ----- toolbar -----
   --mat-toolbar-standard-height: 60px;
   --mat-toolbar-mobile-height: 52px;
   //--mat-toolbar-container-background-color: var(--mat-sys-surface-container);
 
+  // ----- sidenav -----
   --mat-sidenav-container-shape: 0px;
   --mat-sidenav-container-width: 220px;
   --mat-sidenav-container-divider-color: var(--mat-sys-outline-variant);
 
+  // ----- list -----
   --mat-list-active-indicator-shape: 0.25rem;
+  --mat-list-list-item-one-line-container-height: 2.5rem;
 
   position: relative;
   height: 100%;
-
   display: grid;
-  grid-template-rows: var(--mat-toolbar-standard-height) auto;
+  grid-template-rows: min-content auto;
   grid-template-areas: 'header' 'container';
 
   &__header {
-    box-sizing: border-box;
     grid-area: header;
+    box-sizing: border-box;
     gap: 0.75rem;
     border-bottom: 1px solid var(--mat-sys-outline-variant);
     font: var(--mat-sys-headline-small);
@@ -34,13 +37,19 @@
 
   &__sidenav {
     padding: 0.5rem;
+  }
+
+  &__menu {
+    padding: 0 !important;
 
     [mat-list-item] + [mat-list-item] {
-      margin-top: 1px;
+      margin-top: 2px;
     }
   }
 
   &__main {
+    box-sizing: border-box;
+    min-height: 100%;
     padding: 1.5rem;
   }
 }

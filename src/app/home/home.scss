@@ -1,0 +1,10 @@
+.app-home {
+  height: stretch;
+  display: flex;
+
+  > * {
+    margin: auto;
+    text-align: center;
+    font: var(--mat-sys-display-small);
+  }
+}

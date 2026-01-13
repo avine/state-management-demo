@@ -1,11 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-home',
-  imports: [],
+  host: { class: 'app-home' },
   templateUrl: './home.html',
   styleUrl: './home.scss',
+  encapsulation: ViewEncapsulation.None,
 })
-export class Home {
-
-}
+export class Home {}
