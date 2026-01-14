@@ -1,14 +1,14 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, computed, inject, signal, ViewEncapsulation } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatDrawerMode, MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { map } from 'rxjs';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { filter, map } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -39,7 +39,19 @@ export class App {
 
   protected sidenavMode = computed((): MatDrawerMode => (this.isMobile() ? 'over' : 'side'));
 
-  protected sidenavOpened = signal(true);
+  protected sidenavOpened = signal(false);
+
+  constructor() {
+    inject(Router)
+      .events.pipe(
+        takeUntilDestroyed(),
+        filter(
+          (event) =>
+            event instanceof NavigationEnd && this.sidenavMode() === 'over' && this.sidenavOpened(),
+        ),
+      )
+      .subscribe(() => this.toggleSidenav());
+  }
 
   protected toggleSidenav() {
     this.sidenavOpened.update((opened) => !opened);
