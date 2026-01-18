@@ -1,1 +1,7 @@
 <div>State Management demo</div>
+
+<ng-template appLayoutHeader="left"> <div>LEFT</div> </ng-template>
+
+<ng-template appLayoutHeader="right" [action]="action()">
+  <button (click)="toggleAction()">RIGHT</button>
+</ng-template>

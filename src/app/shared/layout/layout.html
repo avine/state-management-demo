@@ -1,0 +1,78 @@
+<mat-toolbar class="app-layout__header" role="heading">
+  <button matIconButton aria-label="Toggle Sidenav" (click)="toggleSidenav()">
+    <mat-icon>
+      @if (sidenavOpened()) {
+        menu_open
+      } @else {
+        menu
+      }
+    </mat-icon>
+  </button>
+
+  @for (item of layoutService.headerLeftList(); track $index) {
+    <ng-container [ngTemplateOutlet]="item.template" />
+  }
+
+  <span class="app-layout__header-spacer"></span>
+
+  @for (item of layoutService.headerRightList(); track $index) {
+    <ng-container [ngTemplateOutlet]="item.template" />
+  }
+</mat-toolbar>
+
+<mat-drawer-container class="app-layout__container" (backdropClick)="sidenavOpened.set(false)">
+  <mat-drawer
+    class="app-layout__sidenav"
+    role="complementary"
+    [mode]="sidenavMode()"
+    [opened]="sidenavOpened()"
+  >
+    <mat-nav-list class="app-layout-alt__menu">
+      <a
+        mat-list-item
+        routerLink="/"
+        routerLinkActive
+        [routerLinkActiveOptions]="{ exact: true }"
+        #active1="routerLinkActive"
+        [activated]="active1.isActive"
+      >
+        Home
+      </a>
+      <a
+        mat-list-item
+        routerLink="/ngxs"
+        routerLinkActive
+        #active2="routerLinkActive"
+        [activated]="active2.isActive"
+      >
+        NgXS Todo
+      </a>
+      <a
+        mat-list-item
+        routerLink="/ngrx"
+        routerLinkActive
+        #active3="routerLinkActive"
+        [activated]="active3.isActive"
+      >
+        NgRX Todo
+      </a>
+      <a
+        mat-list-item
+        routerLink="/material"
+        routerLinkActive
+        #active4="routerLinkActive"
+        [activated]="active4.isActive"
+      >
+        Material
+      </a>
+    </mat-nav-list>
+  </mat-drawer>
+
+  <mat-drawer-content class="app-layout__content">
+    <main class="app-layout__main">
+      <ng-content />
+    </main>
+  </mat-drawer-content>
+
+  <mat-drawer mode="side" position="end">End content</mat-drawer>
+</mat-drawer-container>
