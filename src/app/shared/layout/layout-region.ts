@@ -12,7 +12,13 @@ import {
   TemplateRef,
 } from '@angular/core';
 
-export type LayoutRegionName = 'headerLeft' | 'headerRight' | 'sidenav' | 'sidebar';
+export type LayoutRegionName =
+  | 'headerLeft'
+  | 'headerRight'
+  | 'sidenav'
+  | 'sidebar'
+  | 'panelLeft'
+  | 'panelRight';
 
 // TODO: Class name should renamed to reflect that this is not a "region" but an "[ITEM]" in this region...
 @Directive({

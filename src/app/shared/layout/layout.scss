@@ -1,24 +1,38 @@
 .app-layout {
+  --app-layout-space-outer: 0.5rem;
+  --app-layout-space-inner: 1rem;
+  --app-layout-radius: var(--mat-sys-corner-medium);
+
   // ----- toolbar -----
   --mat-toolbar-container-background-color: var(--mat-sys-primary-container);
   --mat-toolbar-container-text-color: var(--mat-sys-on-primary-container);
 
   // ----- sidenav -----
   --mat-sidenav-content-background-color: var(--mat-sys-primary-container);
-
-  --mat-sidenav-container-width: 240px;
-  --mat-sidenav-container-shape: var(--mat-sys-corner-medium);
+  --mat-sidenav-container-width: 176px;
+  --mat-sidenav-container-shape: var(--app-layout-radius);
   --mat-sidenav-container-background-color: var(--mat-sys-primary-container);
 
   position: relative;
   height: 100%;
   display: grid;
-  grid-template-rows: min-content auto;
+  grid-template-rows: auto 1fr;
   grid-template-areas: 'header' 'container';
+
+  --app-layout-toolbar-height: var(--mat-toolbar-standard-height);
+  @media (width < 600px) {
+    --app-layout-toolbar-height: var(--mat-toolbar-mobile-height);
+  }
 
   &__header {
     grid-area: header;
     gap: 0.75rem;
+
+    padding: 0 calc(var(--app-layout-space-outer) + var(--app-layout-radius)) !important;
+    transition: padding 400ms cubic-bezier(0.25, 0.8, 0.25, 1); // Same as Material drawer's transform
+    @media (width < 600px) {
+      padding: 0 calc(var(--app-layout-space-inner)) !important;
+    }
 
     &-spacer {
       flex: 1 1 auto;
@@ -32,38 +46,88 @@
 
   &__sidenav {
     border-right: 0px !important;
-    padding: 0 0 1rem 1rem;
+    padding: 0 0 var(--app-layout-space-outer) var(--app-layout-space-outer);
   }
 
   &__content {
-    box-sizing: border-box;
-  }
-
-  &__main {
     overflow: auto;
-    box-sizing: border-box;
-    height: calc(100% - 1rem);
-    margin: 0 1rem 1rem 1rem;
-    padding: 1rem;
-    border-radius: var(--mat-sys-corner-medium);
+    height: calc(100% - var(--app-layout-space-outer));
+    margin-inline: var(--app-layout-space-outer);
+    border-radius: var(--app-layout-radius);
     background-color: var(--mat-sys-surface);
     color: var(--mat-sys-on-surface);
     transition: 400ms cubic-bezier(0.25, 0.8, 0.25, 1); // Same as Material drawer's transform
     transition-property: height, margin, border-radius;
+
+    position: relative;
+    display: grid !important;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas: 'panel-left main panel-right';
+  }
+
+  &__panel {
+    height: calc(100vh - var(--app-layout-toolbar-height) - var(--app-layout-space-outer));
+    overflow: auto;
+    position: sticky;
+    top: 0;
+    box-sizing: border-box;
+    padding: var(--app-layout-space-inner);
+
+    &--left {
+      grid-area: panel-left;
+      border-right: 1px solid var(--mat-sys-primary-container);
+    }
+
+    &--right {
+      grid-area: panel-right;
+      border-left: 1px solid var(--mat-sys-primary-container);
+    }
+  }
+
+  &__main {
+    grid-area: main;
+    padding: var(--app-layout-space-inner);
+  }
+
+  &__sidebar {
+    --mat-sidenav-container-width: 152px;
+    --mat-sidenav-container-shape: 0;
+
+    padding-block: 0.5rem;
+  }
+
+  @media (width < 840px) {
+    &__content {
+      grid-template-columns: 1fr;
+      grid-template-rows: max-content max-content 1fr;
+      grid-template-areas: 'panel-left' 'panel-right' 'main';
+    }
+
+    &__panel {
+      height: auto;
+      position: relative;
+    }
   }
 
   @media (width < 600px) {
-    --mat-sidenav-container-width: 256px;
+    --mat-sidenav-container-divider-color: var(--mat-sys-primary-container);
+    --mat-sidenav-container-width: 192px; // FIXME: faut pas un calc(... + 1rem) ?
     --mat-sidenav-container-background-color: var(--mat-sys-surface);
 
     &__sidenav {
-      padding-right: 1rem;
+      padding-right: var(--app-layout-space-outer);
     }
 
-    &__main {
+    &__content {
       height: 100%;
       margin: 0;
       border-radius: 0;
+    }
+
+    &__sidebar {
+      --mat-sidenav-container-width: 66px;
+
+      padding-left: var(--app-layout-space-outer);
     }
   }
 }

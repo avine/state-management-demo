@@ -39,16 +39,42 @@
     }
   </mat-drawer>
 
+  <mat-drawer-content>
+    <div class="app-layout__content">
+      @let panelLeft = ('panelLeft' | layoutRegion)();
+      @if (panelLeft) {
+        <div class="app-layout__panel app-layout__panel--left">
+          @for (item of panelLeft; track item) {
+            <ng-container [ngTemplateOutlet]="item.template" />
+          }
+        </div>
+      }
+
+      @let panelRight = ('panelRight' | layoutRegion)();
+      @if (panelRight) {
+        <div class="app-layout__panel app-layout__panel--right">
+          @for (item of panelRight; track item) {
+            <ng-container [ngTemplateOutlet]="item.template" />
+          }
+        </div>
+      }
+
+      <main class="app-layout__main">
+        <ng-content />
+      </main>
+    </div>
+  </mat-drawer-content>
+
   @let sidebarList = ('sidebar' | layoutRegion)();
-  <mat-drawer role="complementary" position="end" mode="side" [opened]="sidebarList !== null">
+  <mat-drawer
+    class="app-layout__sidebar"
+    role="complementary"
+    position="end"
+    mode="side"
+    [opened]="sidebarList !== null"
+  >
     @for (item of sidebarList; track item) {
       <ng-container [ngTemplateOutlet]="item.template" />
     }
   </mat-drawer>
-
-  <mat-drawer-content class="app-layout__content">
-    <main class="app-layout__main">
-      <ng-content />
-    </main>
-  </mat-drawer-content>
 </mat-drawer-container>
