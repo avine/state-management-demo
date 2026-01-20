@@ -1,7 +1,55 @@
 <div>State Management demo</div>
 
-<ng-template appLayoutHeader="left"> <div>LEFT</div> </ng-template>
+<ng-template appLayoutRegion="headerLeft"> <div>LEFT</div> </ng-template>
 
-<ng-template appLayoutHeader="right" [action]="action()">
+<ng-template [appLayoutRegion]="prepend() ? 'headerLeft' : 'headerRight'" [prepend]="prepend()">
   <button (click)="toggleAction()">RIGHT</button>
+</ng-template>
+
+<ng-template appLayoutRegion="sidenav">
+  <mat-nav-list>
+    <a
+      mat-list-item
+      routerLink="/"
+      routerLinkActive
+      [routerLinkActiveOptions]="{ exact: true }"
+      #active1="routerLinkActive"
+      [activated]="active1.isActive"
+    >
+      Home
+    </a>
+    <a
+      mat-list-item
+      routerLink="/ngxs"
+      routerLinkActive
+      #active2="routerLinkActive"
+      [activated]="active2.isActive"
+    >
+      NgXS Todo
+    </a>
+    <a
+      mat-list-item
+      routerLink="/ngrx"
+      routerLinkActive
+      #active3="routerLinkActive"
+      [activated]="active3.isActive"
+    >
+      NgRX Todo
+    </a>
+    <a
+      mat-list-item
+      routerLink="/material"
+      routerLinkActive
+      #active4="routerLinkActive"
+      [activated]="active4.isActive"
+    >
+      Material
+    </a>
+  </mat-nav-list>
+</ng-template>
+
+<ng-template appLayoutRegion="sidebar">
+  <button matIconButton><mat-icon>home</mat-icon></button>
+  <button matIconButton><mat-icon>search</mat-icon></button>
+  <button matIconButton><mat-icon>settings</mat-icon></button>
 </ng-template>
