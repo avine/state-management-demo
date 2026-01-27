@@ -31,9 +31,7 @@ export class LayoutConfigService {
 
         this._config.update((config) => ({ ...config, ..._partialConfig }));
 
-        Object.keys(_partialConfig).forEach((configKey) =>
-          configKeys.add(configKey as keyof LayoutConfig),
-        );
+        Object.keys(_partialConfig).forEach((key) => configKeys.add(key as keyof LayoutConfig));
       },
       { injector },
     );
@@ -45,10 +43,7 @@ export class LayoutConfigService {
   private reset(...configKeys: (keyof LayoutConfig)[]) {
     this._config.update((config) => ({
       ...config,
-      ...configKeys.reduce((partialConfig, configKey) => {
-        partialConfig[configKey] = LAYOUT_DEFAULT_CONFIG[configKey] as any; // eslint-disable-line @typescript-eslint/no-explicit-any
-        return partialConfig;
-      }, {} as Partial<LayoutConfig>),
+      ...Object.fromEntries(configKeys.map((key) => [key, LAYOUT_DEFAULT_CONFIG[key]])),
     }));
   }
 }
