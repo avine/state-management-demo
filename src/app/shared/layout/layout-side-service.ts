@@ -5,12 +5,15 @@ import { MatDrawerMode } from '@angular/material/sidenav';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, map } from 'rxjs';
 import { LayoutConfigService } from './layout-config-service';
+import { LayoutRegionService } from './layout-region-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LayoutSideService {
   private config = inject(LayoutConfigService);
+
+  private regionService = inject(LayoutRegionService);
 
   readonly isMobile = toSignal(
     inject(BreakpointObserver)
@@ -20,7 +23,7 @@ export class LayoutSideService {
 
   readonly sidenavOpened = signal(true);
 
-  readonly sidebarOpened = signal(true);
+  readonly sidebarOpened = signal(false);
 
   readonly sidenavMode = computed((): MatDrawerMode => (this.isMobile() ? 'over' : 'side'));
 
@@ -32,6 +35,7 @@ export class LayoutSideService {
 
   constructor() {
     this.closeSidenavOnNavigation();
+    this.closeEmptySide();
     this.preventSideConflict();
   }
 
@@ -45,6 +49,14 @@ export class LayoutSideService {
         ),
       )
       .subscribe(() => this.toggleSidenav(false));
+  }
+
+  private closeEmptySide() {
+    const sidenav = this.regionService.get('sidenav');
+    const sidebar = this.regionService.get('sidebar');
+
+    effect(() => sidenav().length || this.sidenavOpened.set(false));
+    effect(() => sidebar().length || this.sidebarOpened.set(false));
   }
 
   private preventSideConflict() {
