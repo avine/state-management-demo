@@ -1,14 +1,14 @@
-@let sidenavRegions = layoutSidenav.regions();
+@let sidenav = ('sidenav' | layoutRegion)();
 
 <mat-toolbar class="app-layout__header" role="heading">
   <button
     matIconButton
     aria-label="Toggle Sidenav"
-    [disabled]="sidenavRegions === null"
-    (click)="layoutSidenav.toggle()"
+    [disabled]="!sidenav.length"
+    (click)="sideService.toggleSidenav()"
   >
     <mat-icon>
-      @if (layoutSidenav.opened()) {
+      @if (sideService.sidenavOpened()) {
         menu_open
       } @else {
         menu
@@ -20,29 +20,41 @@
     <ng-container [ngTemplateOutlet]="item.template" />
   }
 
-  <span class="app-layout__header-spacer"></span>
+  <div class="app-layout__header-center">
+    @for (item of ('headerCenter' | layoutRegion)(); track item) {
+      <ng-container [ngTemplateOutlet]="item.template" />
+    }
+  </div>
 
   @for (item of ('headerRight' | layoutRegion)(); track item) {
     <ng-container [ngTemplateOutlet]="item.template" />
   }
 </mat-toolbar>
 
-<mat-drawer-container class="app-layout__container" (backdropClick)="layoutSidenav.toggle(false)">
+<mat-drawer-container
+  class="app-layout__container"
+  [hasBackdrop]="sideService.hasBackdrop()"
+  (backdropClick)="sideService.toggleSidenav(false); sideService.toggleSidebar(false)"
+  #drawerContainer
+>
   <mat-drawer
     class="app-layout__sidenav"
     role="complementary"
-    [mode]="layoutSidenav.mode()"
-    [opened]="sidenavRegions !== null && layoutSidenav.opened()"
+    [mode]="sideService.sidenavMode()"
+    [opened]="!!sidenav.length && sideService.sidenavOpened()"
   >
-    @for (item of sidenavRegions; track item) {
+    @for (item of sidenav; track item) {
       <ng-container [ngTemplateOutlet]="item.template" />
     }
   </mat-drawer>
 
   <mat-drawer-content>
-    <div class="app-layout__content">
+    <div
+      class="app-layout__content"
+      [class.app-layout__content--width-sidebar-opened]="sideService.sidebarOpened()"
+    >
       @let panelLeft = ('panelLeft' | layoutRegion)();
-      @if (panelLeft) {
+      @if (panelLeft.length) {
         <div class="app-layout__panel app-layout__panel--left">
           @for (item of panelLeft; track item) {
             <ng-container [ngTemplateOutlet]="item.template" />
@@ -51,7 +63,7 @@
       }
 
       @let panelRight = ('panelRight' | layoutRegion)();
-      @if (panelRight) {
+      @if (panelRight.length) {
         <div class="app-layout__panel app-layout__panel--right">
           @for (item of panelRight; track item) {
             <ng-container [ngTemplateOutlet]="item.template" />
@@ -60,21 +72,32 @@
       }
 
       <main class="app-layout__main">
+        <button
+          matIconButton
+          aria-label="Toggle Sidebar"
+          (click)="sideService.toggleSidebar()"
+          style="float: right"
+        >
+          <mat-icon>settings</mat-icon>
+        </button>
+
         <ng-content />
       </main>
     </div>
   </mat-drawer-content>
 
-  @let sidebarList = ('sidebar' | layoutRegion)();
+  @let sidebar = ('sidebar' | layoutRegion)();
   <mat-drawer
     class="app-layout__sidebar"
     role="complementary"
     position="end"
-    mode="side"
-    [opened]="sidebarList !== null"
+    [mode]="sideService.sidebarMode()"
+    [opened]="!!sidebar.length && sideService.sidebarOpened()"
   >
-    @for (item of sidebarList; track item) {
-      <ng-container [ngTemplateOutlet]="item.template" />
-    }
+    <div class="app-layout__sidebar-inner">
+      @for (item of sidebar; track item) {
+        <ng-container [ngTemplateOutlet]="item.template" />
+      }
+    </div>
   </mat-drawer>
 </mat-drawer-container>

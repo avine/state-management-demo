@@ -11,6 +11,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
+import { RouterLink } from '@angular/router';
+import { LayoutModule } from '../shared/layout';
 
 @Component({
   selector: 'app-material-demo',
@@ -27,6 +29,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatRadioModule,
     MatSlideToggleModule,
     MatTabsModule,
+    LayoutModule,
+    RouterLink,
   ],
   templateUrl: './material-demo.html',
   styleUrl: './material-demo.scss',

@@ -1,9 +1,9 @@
-import { Component, signal, ViewEncapsulation } from '@angular/core';
+import { Component, inject, Injector, signal, ViewEncapsulation } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { LayoutModule } from '../shared/layout';
+import { LayoutConfig, LayoutConfigService, LayoutModule } from '../shared/layout';
 
 @Component({
   selector: 'app-home',
@@ -21,9 +21,27 @@ import { LayoutModule } from '../shared/layout';
   encapsulation: ViewEncapsulation.None,
 })
 export class Home {
-  prepend = signal(false);
+  layoutConfigService = inject(LayoutConfigService);
+
+  index = signal(2);
 
   toggleAction() {
-    this.prepend.update((value) => !value);
+    this.index.update((value) => value - 0.5);
+  }
+
+  config = signal<Partial<LayoutConfig>>({ sidebarWidth: '600px', sidebarDesktopMode: 'push' });
+
+  constructor() {
+    const injector = inject(Injector);
+
+    this.layoutConfigService.register(this.config);
+
+    /*setTimeout(() => {
+      this.layoutConfigService.register(this.config, injector);
+    }, 2000);
+
+    setTimeout(() => {
+      this.config.set({ sidebarWidth: '280px', panelRightWidth: '100px' });
+    }, 4000);*/
   }
 }

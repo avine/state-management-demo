@@ -20,7 +20,7 @@ html {
         tertiary: mat.$blue-palette,
       ),
       typography: Lato,
-      density: -4,
+      density: -3,
     )
   );
 }
@@ -30,7 +30,9 @@ body {
 
   margin: 0;
 
-  background-color: var(--mat-sys-surface);
+  //background-color: var(--mat-sys-surface);
+  background-color: var(--app-layout-background-color);
+
   color: var(--mat-sys-on-surface);
   font: var(--mat-sys-body-medium);
 }

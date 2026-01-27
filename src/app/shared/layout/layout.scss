@@ -1,42 +1,51 @@
-.app-layout {
-  --app-layout-space-outer: 0.5rem;
-  --app-layout-space-inner: 1rem;
+:root {
+  --app-layout-gutter-outer: 0.75rem;
+  --app-layout-gutter-inner: 1.5rem;
   --app-layout-radius: var(--mat-sys-corner-medium);
+  --app-layout-background-color: var(--mat-sys-secondary-container);
+  --app-layout-text-color: var(--mat-sys-on-secondary-container);
+}
 
-  // ----- toolbar -----
-  --mat-toolbar-container-background-color: var(--mat-sys-primary-container);
-  --mat-toolbar-container-text-color: var(--mat-sys-on-primary-container);
+// Direct override
+//.mat-drawer-backdrop.mat-drawer-shown {
+//  backdrop-filter: blur(0.25rem);
+//}
 
-  // ----- sidenav -----
-  --mat-sidenav-content-background-color: var(--mat-sys-primary-container);
-  --mat-sidenav-container-width: 176px;
+// Duplicate from Material drawer's transform
+$transition: 400ms cubic-bezier(0.25, 0.8, 0.25, 1);
+
+.app-layout {
+  --mat-toolbar-standard-height: 48px;
+  --mat-toolbar-mobile-height: 42px;
+  --mat-toolbar-container-background-color: var(--app-layout-background-color);
+  --mat-toolbar-container-text-color: var(--app-layout-text-color);
+
   --mat-sidenav-container-shape: var(--app-layout-radius);
-  --mat-sidenav-container-background-color: var(--mat-sys-primary-container);
+  --mat-sidenav-container-background-color: var(--app-layout-background-color);
+  --mat-sidenav-container-text-color: var(--app-layout-text-color);
+  --mat-sidenav-content-background-color: var(--mat-sidenav-container-background-color);
 
-  position: relative;
+  margin: 0 auto;
+  min-width: 320px;
+  max-width: 1920px;
   height: 100%;
+  position: relative;
   display: grid;
   grid-template-rows: auto 1fr;
   grid-template-areas: 'header' 'container';
 
-  --app-layout-toolbar-height: var(--mat-toolbar-standard-height);
-  @media (width < 600px) {
-    --app-layout-toolbar-height: var(--mat-toolbar-mobile-height);
-  }
-
   &__header {
     grid-area: header;
     gap: 0.75rem;
+    padding: 0 calc(var(--app-layout-gutter-outer) + var(--app-layout-radius)) !important;
 
-    padding: 0 calc(var(--app-layout-space-outer) + var(--app-layout-radius)) !important;
-    transition: padding 400ms cubic-bezier(0.25, 0.8, 0.25, 1); // Same as Material drawer's transform
-    @media (width < 600px) {
-      padding: 0 calc(var(--app-layout-space-inner)) !important;
-    }
+    &-center {
+      flex-grow: 1;
 
-    &-spacer {
-      flex: 1 1 auto;
-      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: inherit;
     }
   }
 
@@ -45,55 +54,74 @@
   }
 
   &__sidenav {
+    --mat-sidenav-container-width: var(--app-layout-sidenav-width);
+
+    max-width: 100vw;
     border-right: 0px !important;
-    padding: 0 0 var(--app-layout-space-outer) var(--app-layout-space-outer);
+    padding: 0 0 var(--app-layout-gutter-outer) var(--app-layout-gutter-outer);
+
+    transition-property: transform, background-color !important;
+
+    @media (width < 600px) {
+      --mat-sidenav-container-width: calc(
+        var(--app-layout-sidenav-width) + var(--app-layout-gutter-outer)
+      );
+
+      --mat-sidenav-container-background-color: color-mix(
+        in srgb,
+        var(--app-layout-background-color) 65%,
+        var(--mat-sys-surface)
+      );
+
+      padding-right: var(--app-layout-gutter-outer);
+    }
   }
 
   &__content {
+    height: calc(100% - var(--app-layout-gutter-outer));
+    position: relative;
     overflow: auto;
-    height: calc(100% - var(--app-layout-space-outer));
-    margin-inline: var(--app-layout-space-outer);
+    margin-inline: var(--app-layout-gutter-outer);
     border-radius: var(--app-layout-radius);
     background-color: var(--mat-sys-surface);
     color: var(--mat-sys-on-surface);
-    transition: 400ms cubic-bezier(0.25, 0.8, 0.25, 1); // Same as Material drawer's transform
-    transition-property: height, margin, border-radius;
 
-    position: relative;
     display: grid !important;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: fit-content(var(--app-layout-panel-left-width)) 1fr fit-content(
+        var(--app-layout-panel-right-width)
+      );
     grid-template-areas: 'panel-left main panel-right';
+
+    transition: margin-right $transition;
+
+    &--width-sidebar-opened {
+      margin-right: 0;
+    }
   }
 
   &__panel {
-    height: calc(100vh - var(--app-layout-toolbar-height) - var(--app-layout-space-outer));
-    overflow: auto;
+    --app-layout-toolbar-height: var(--mat-toolbar-standard-height);
+    @media (width < 600px) {
+      --app-layout-toolbar-height: var(--mat-toolbar-mobile-height);
+    }
+    height: calc(100vh - var(--app-layout-toolbar-height) - var(--app-layout-gutter-outer));
+
     position: sticky;
+    overflow: auto;
     top: 0;
     box-sizing: border-box;
-    padding: var(--app-layout-space-inner);
+    padding: var(--app-layout-gutter-inner);
+    border: 0 solid var(--app-layout-background-color);
 
     &--left {
       grid-area: panel-left;
-      border-right: 1px solid var(--mat-sys-primary-container);
+      border-right-width: 1px;
     }
 
     &--right {
       grid-area: panel-right;
-      border-left: 1px solid var(--mat-sys-primary-container);
+      border-left-width: 1px;
     }
-  }
-
-  &__main {
-    grid-area: main;
-    padding: var(--app-layout-space-inner);
-  }
-
-  &__sidebar {
-    --mat-sidenav-container-width: 152px;
-    --mat-sidenav-container-shape: 0;
-
-    padding-block: 0.5rem;
   }
 
   @media (width < 840px) {
@@ -106,28 +134,33 @@
     &__panel {
       height: auto;
       position: relative;
+      border-width: 0 0 1px 0;
     }
   }
 
-  @media (width < 600px) {
-    --mat-sidenav-container-divider-color: var(--mat-sys-primary-container);
-    --mat-sidenav-container-width: 192px; // FIXME: faut pas un calc(... + 1rem) ?
-    --mat-sidenav-container-background-color: var(--mat-sys-surface);
+  &__main {
+    grid-area: main;
+    position: relative;
+    padding: var(--app-layout-gutter-inner);
+  }
 
-    &__sidenav {
-      padding-right: var(--app-layout-space-outer);
-    }
+  &__sidebar {
+    --mat-sidenav-container-width: var(--app-layout-sidebar-width);
+    --mat-sidenav-container-shape: 0;
 
-    &__content {
+    max-width: 100vw;
+    border-left: 0px !important;
+    padding: 0 var(--app-layout-gutter-outer) var(--app-layout-gutter-outer)
+      var(--app-layout-gutter-outer);
+
+    &-inner {
       height: 100%;
-      margin: 0;
-      border-radius: 0;
-    }
-
-    &__sidebar {
-      --mat-sidenav-container-width: 66px;
-
-      padding-left: var(--app-layout-space-outer);
+      position: relative;
+      overflow: auto;
+      box-sizing: border-box;
+      border-radius: var(--app-layout-radius);
+      padding: var(--app-layout-gutter-inner);
+      background-color: var(--mat-sys-surface);
     }
   }
 }
