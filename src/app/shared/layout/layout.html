@@ -39,6 +39,9 @@
 >
   <mat-drawer
     class="app-layout__sidenav"
+    [class.app-layout__sidenav--width-shadow]="
+      sideService.sidebarOpened() && sideService.sidebarOpened()
+    "
     role="complementary"
     [mode]="sideService.sidenavMode()"
     [opened]="!!sidenav.length && sideService.sidenavOpened()"
@@ -51,6 +54,7 @@
   <mat-drawer-content>
     <div
       class="app-layout__content"
+      [class.app-layout__content--width-sidenav-opened]="sideService.sidenavOpened()"
       [class.app-layout__content--width-sidebar-opened]="sideService.sidebarOpened()"
     >
       @let panelLeft = ('panelLeft' | layoutRegion)();
